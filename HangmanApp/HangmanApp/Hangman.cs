@@ -1,91 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Common.Extensions;
+﻿using System.Data;
 using gnuciDictionary;
-using Microsoft.VisualBasic;
-using static System.Formats.Asn1.AsnWriter;
 
 namespace HangmanApp
 {
     /*
      LB: Amazing job on the game! 94% Please see comments and list of bugs below and resubmit.
-         1. Ensure all relevant textboxes (e.g. txtAnswer, txtTriesRemaining, txtWord) are disabled when appropriate.
-         2. The txtAnswer and txtTriesRemaining textboxes should not be filled in when "Give Up" or "Reset" is clicked.
-         3. The logic inside the event handlers (BtnNewGame_Click, BtnKeyboard_Click, etc.) should be moved into separate methods to keep the code cleaner and easier to maintain.
-         4. Stick to a consistent naming convention (camelCase for variables, PascalCase for methods and classes) for better readability.
+        (*) 1. Ensure all relevant textboxes (e.g. txtAnswer, txtTriesRemaining, txtWord) are disabled when appropriate.
+        (*) 2. The txtAnswer and txtTriesRemaining textboxes should not be filled in when "Give Up" or "Reset" is clicked.
+        (*) 3. The logic inside the event handlers (BtnNewGame_Click, BtnKeyboard_Click, etc.) should be moved into separate methods to keep the code cleaner and easier to maintain.
+        (*) 4. Stick to a consistent naming convention (camelCase for variables, PascalCase for methods and classes) for better readability.
      */
     public partial class Hangman : Form
     {
-        List<Button> lstkeys;
-//LB: You can simplify your code by using ! instead of == false for checking FALSE conditions, like this: !w.Value.Contains(" ") instead of w.Value.Contains(" ") == false.
+        List<Button> lstKeys;
+        //LB: (*)  You can simplify your code by using ! instead of == false for checking FALSE conditions, like this: !w.Value.Contains(" ") instead of w.Value.Contains(" ") == false. 
 
-        List<Word> lstwrd = gnuciDictionary.EnglishDictionary.GetAllWords().ToList().Where(w => w.Value.Count() < 11 && w.Value.Count() > 5 
-                                                                    && w.Value.Contains("-") == false && w.Value.Contains(" ") == false).ToList();
 
-        List<char> lstquestionmark;
+        List<Word> lstwrd = gnuciDictionary.EnglishDictionary.GetAllWords().ToList().Where(w => w.Value.Count() < 11 && w.Value.Count() > 5
+                                                                    && !w.Value.Contains("-") && !w.Value.Contains(" ")).ToList();
+        List<char> lstQuestionMark;
 
         Random rdm = new();
-        string gameword = "";
+        string GameWord = "";
 
         enum WinningStatusEnum { Winning, Playing, Losing, GiveUp, Start }
-        WinningStatusEnum gamestatus;
+        WinningStatusEnum GameStatus;
 
 
         public Hangman()
         {
             InitializeComponent();
             btnNewGame.Click += BtnNewGame_Click;
-            lstkeys = new() {btnQ,btnW,btnE,btnR,btnT,btnY,btnU,btnI,btnO,btnP,
+            lstKeys = new() {btnQ,btnW,btnE,btnR,btnT,btnY,btnU,btnI,btnO,btnP,
                                 btnA,btnS,btnD, btnF,btnG,btnH,btnJ,btnK,btnL,
                                     btnZ,btnX,btnC,btnV,btnB,btnN,btnM};
 
-            lstkeys.ForEach(b => b.Click += BtnKeyboard_Click);
-            lstquestionmark = new() { '?' };
+            lstKeys.ForEach(b => b.Click += BtnKeyboard_Click);
+            lstQuestionMark = new() { '?' };
             btnGiveUp.Click += BtnGiveUp_Click;
             btnReset.Click += BtnReset_Click;
         }
 
         private void BtnNewGame_Click(object? sender, EventArgs e)
         {
-            gameword = lstwrd[rdm.Next(0, lstwrd.Count)].Value.ToString().ToUpper();
-
-            gamestatus = WinningStatusEnum.Playing;
-            txtWord.ForeColor = Color.Black;
-
-            txtTriesRemaining.Text = 13.ToString();
-
-            int letternum = gameword.Length;
-
-            foreach(Control c in tblMain.Controls)
-            {
-                c.Enabled = true;
-            }
-
-            btnNewGame.Enabled = false;
-            txtAnswer.Text = "";
-
-            foreach (Control c in tblBottom.Controls)
-            {
-                c.Enabled = true;
-            }
-
-            lstkeys.ForEach(b => b.Enabled = true);
-
-            GameMessage();
-
-            txtWord.Text = Replicate(lstquestionmark[0], letternum);
-
-            txtLetters.Clear();
-
+            StartGame();
         }
         static string Replicate(char character, int count)
         {
@@ -95,70 +53,48 @@ namespace HangmanApp
         private void BtnKeyboard_Click(object? sender, EventArgs e)
         {
             Button btn = (Button)sender;
-            txtLetters.Text = txtLetters.Text + btn.Text;
-            btn.Enabled = false;
-
-//LB: The step of setting n to 13 is unnecessary. You can directly set n to txtTriesRemaining.Text by the declaration.
-            int n = 13;
-//LB: The int.TryParse and if (conversion == true) are not needed. You can directly decrement txtTriesRemaining if it’s a valid number.
-
-            bool conversion = int.TryParse(txtTriesRemaining.Text, out n);
-
-            char w;
-            char.TryParse(btn.Text, out w);
-
-            if (conversion == true)
-            {
-                txtTriesRemaining.Text = (n - 1).ToString();
-            }
-
-            if (gameword.Contains(btn.Text))
-            {
-                for (int i = 0; i < gameword.Length; i++)
-                {
-                    if (gameword[i] == w)
-                    {
-                        int index = gameword[i];
-                        txtWord.Text = Stuff(i, w.ToString());
-                    }
-                }
-            }
-            DetermineStatus();
+            LetterSelection(btn);
         }
         private string Stuff(int substrend, string repl)
         {
-            return txtWord.Text.Substring(0,substrend) + repl + txtWord.Text.Substring(substrend + 1, txtWord.TextLength - substrend - 1);
+            return txtWord.Text.Substring(0, substrend) + repl + txtWord.Text.Substring(substrend + 1, txtWord.TextLength - substrend - 1);
         }
         private void EndGame()
         {
+
             foreach (Control c in tblBottom.Controls)
             {
                 c.Enabled = false;
             }
+
             DisableTableMainControls();
 
-            EndGameMode();
+            EnableControlsForNewGame();
 
-            switch (gamestatus)
+            txtAnswer.Enabled = true;
+            txtAnswer.Text = GameWord.ToString();
+            switch (GameStatus)
             {
                 case WinningStatusEnum.Winning:
-                    txtWord.Enabled = true;
                     txtWord.ForeColor = Color.Green;
+                    txtWord.Enabled = true;
                     break;
                 case WinningStatusEnum.Start:
+                case WinningStatusEnum.GiveUp:
                     NewGameMode();
                     break;
             }
-            GameMessage();
+
             txtScore.Text = CalculateScore().ToString();
-            txtAnswer.Text = gameword.ToString();
+
+            GameMessage();
         }
         private void GameMessage()
         {
-            string msg = gameword.ToList().Count().ToString() + "-letter word. Click on the keyboard below to choose a letter.";
-            string score = CalculateScore().ToString();
+            string msg = GameWord.ToList().Count().ToString() + "-letter word. Click on the keyboard below to choose a letter.";
+            string score = txtScore.Text;
 
-            switch (gamestatus)
+            switch (GameStatus)
             {
                 case WinningStatusEnum.Start:
                     msg = "Press 'New game' to begin playing.";
@@ -168,7 +104,7 @@ namespace HangmanApp
                     ". Total score: " + score + ".";
                     break;
                 case WinningStatusEnum.Losing:
-                    msg = "Game over - word is: " + gameword + ". Total score: " + score + ".";
+                    msg = "Game over - word is: " + GameWord + ". Total score: " + score + ".";
                     break;
                 case WinningStatusEnum.GiveUp:
                     msg = "No problem, you'll have another chance soon. Total score: " + score + ".";
@@ -179,37 +115,38 @@ namespace HangmanApp
         }
         private WinningStatusEnum DetermineStatus()
         {
-// LB: The step of setting 'n' to 13 is unnecessary. Simplify the code by directly parsing the value from txtTriesRemaining.Text in the declaration.
+            // (*) LB: The step of setting 'n' to 13 is unnecessary. Simplify the code by directly parsing the value from txtTriesRemaining.Text in the declaration.
 
-            int n = 13;
-            bool conversion = int.TryParse(txtTriesRemaining.Text, out n);
+            int n;
+            int.TryParse(txtTriesRemaining.Text, out n);
 
-            if (txtWord.Text == gameword)
+            if (txtWord.Text == GameWord)
             {
-                gamestatus = WinningStatusEnum.Winning;
+                GameStatus = WinningStatusEnum.Winning;
                 EndGame();
             }
             else if (n < 1)
             {
-                gamestatus = WinningStatusEnum.Losing;
+                GameStatus = WinningStatusEnum.Losing;
                 EndGame();
             }
             else
-                gamestatus = WinningStatusEnum.Playing;
-            return gamestatus;
+                GameStatus = WinningStatusEnum.Playing;
+
+            return GameStatus;
         }
         private int CalculatePoints()
         {
             int points = 0;
             int ecpoints = 0;
-            int triesremaining = 0;
-            int.TryParse(txtTriesRemaining.Text, out triesremaining);
+            int TriesRemaining = 0;
+            int.TryParse(txtTriesRemaining.Text, out TriesRemaining);
 
-            if (triesremaining > 2 && txtWord.Text == gameword)
+            if (TriesRemaining > 2 && txtWord.Text == GameWord)
             {
                 ecpoints = 1;
             }
-            switch (gamestatus)
+            switch (GameStatus)
             {
                 case WinningStatusEnum.Winning:
                     points = 1;
@@ -231,15 +168,15 @@ namespace HangmanApp
         }
         private void BtnGiveUp_Click(object? sender, EventArgs e)
         {
-            gamestatus = WinningStatusEnum.GiveUp;
+            GameStatus = WinningStatusEnum.GiveUp;
             EndGame();
         }
         private void BtnReset_Click(object? sender, EventArgs e)
         {
-            gamestatus = WinningStatusEnum.Start;
+            GameStatus = WinningStatusEnum.Start;
             EndGame();
         }
-        private void EndGameMode()
+        private void EnableControlsForNewGame()
         {
             btnNewGame.Enabled = true;
             txtMessage.Enabled = true;
@@ -247,7 +184,7 @@ namespace HangmanApp
         private void NewGameMode()
         {
             DisableTableMainControls();
-            EndGameMode();
+            EnableControlsForNewGame();
 
             foreach (Control c in tblMain.Controls)
             {
@@ -263,6 +200,69 @@ namespace HangmanApp
             {
                 c.Enabled = false;
             }
+        }
+        private void StartGame()
+        {
+            GameWord = lstwrd[rdm.Next(0, lstwrd.Count)].Value.ToString().ToUpper();
+
+            GameStatus = WinningStatusEnum.Playing;
+            txtWord.ForeColor = Color.Black;
+
+            txtTriesRemaining.Text = 13.ToString();
+
+            int LetterNum = GameWord.Length;
+
+            foreach (Control c in tblMain.Controls)
+            {
+                c.Enabled = true;
+            }
+
+            btnNewGame.Enabled = false;
+            txtAnswer.Text = "";
+            txtAnswer.Enabled = false;
+
+            foreach (Control c in tblBottom.Controls)
+            {
+                c.Enabled = true;
+            }
+
+            lstKeys.ForEach(b => b.Enabled = true);
+
+            GameMessage();
+
+            txtWord.Text = Replicate(lstQuestionMark[0], LetterNum);
+
+            txtLetters.Clear();
+        }
+        private void LetterSelection(Button btn)
+        {
+            txtLetters.Text = txtLetters.Text + btn.Text;
+            btn.Enabled = false;
+
+            // (*) LB: The step of setting n to 13 is unnecessary. You can directly set n to txtTriesRemaining.Text by the declaration.
+            int n;
+            // (*) LB: The int.TryParse and if (conversion == true) are not needed. You can directly decrement txtTriesRemaining if it’s a valid number.
+
+            char w;
+            char.TryParse(btn.Text, out w);
+
+            if (int.TryParse(txtTriesRemaining.Text, out n))
+            {
+                txtTriesRemaining.Text = (n - 1).ToString();
+            }
+
+            if (GameWord.Contains(btn.Text))
+            {
+                for (int i = 0; i < GameWord.Length; i++)
+                {
+                    if (GameWord[i] == w)
+                    {
+                        int index = GameWord[i];
+                        txtWord.Text = Stuff(i, w.ToString());
+                    }
+                }
+            }
+            DetermineStatus();
         }
     }
 }

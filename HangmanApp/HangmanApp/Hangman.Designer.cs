@@ -114,7 +114,6 @@
             // 
             tblMain.SetColumnSpan(txtMessage, 4);
             txtMessage.Dock = DockStyle.Fill;
-            txtMessage.Enabled = false;
             txtMessage.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             txtMessage.ForeColor = Color.Firebrick;
             txtMessage.Location = new Point(163, 3);
