@@ -4,18 +4,16 @@ using gnuciDictionary;
 namespace HangmanApp
 {
     /*
+     YM: Great job! See one comment below from LB which still needs fixing. User can overwrite the text box values. Was that intentional? 
+    It may be worthwhile switching them to a label.
+
      LB: Amazing job on the game! 94% Please see comments and list of bugs below and resubmit.
         (*) 1. Ensure all relevant textboxes (e.g. txtAnswer, txtTriesRemaining, txtWord) are disabled when appropriate.
-        (*) 2. The txtAnswer and txtTriesRemaining textboxes should not be filled in when "Give Up" or "Reset" is clicked.
-        (*) 3. The logic inside the event handlers (BtnNewGame_Click, BtnKeyboard_Click, etc.) should be moved into separate methods to keep the code cleaner and easier to maintain.
-        (*) 4. Stick to a consistent naming convention (camelCase for variables, PascalCase for methods and classes) for better readability.
-     */
+    */
     public partial class Hangman : Form
     {
         List<Button> lstKeys;
-        //LB: (*)  You can simplify your code by using ! instead of == false for checking FALSE conditions, like this: !w.Value.Contains(" ") instead of w.Value.Contains(" ") == false. 
-
-
+       
         List<Word> lstwrd = gnuciDictionary.EnglishDictionary.GetAllWords().ToList().Where(w => w.Value.Count() < 11 && w.Value.Count() > 5
                                                                     && !w.Value.Contains("-") && !w.Value.Contains(" ")).ToList();
         List<char> lstQuestionMark;
@@ -115,8 +113,7 @@ namespace HangmanApp
         }
         private WinningStatusEnum DetermineStatus()
         {
-            // (*) LB: The step of setting 'n' to 13 is unnecessary. Simplify the code by directly parsing the value from txtTriesRemaining.Text in the declaration.
-
+            
             int n;
             int.TryParse(txtTriesRemaining.Text, out n);
 
@@ -239,10 +236,7 @@ namespace HangmanApp
             txtLetters.Text = txtLetters.Text + btn.Text;
             btn.Enabled = false;
 
-            // (*) LB: The step of setting n to 13 is unnecessary. You can directly set n to txtTriesRemaining.Text by the declaration.
             int n;
-            // (*) LB: The int.TryParse and if (conversion == true) are not needed. You can directly decrement txtTriesRemaining if it’s a valid number.
-
             char w;
             char.TryParse(btn.Text, out w);
 
