@@ -29,15 +29,10 @@
         private void InitializeComponent()
         {
             tblMain = new TableLayoutPanel();
-            txtMessage = new TextBox();
             btnNewGame = new Button();
             lblScore = new Label();
-            txtScore = new TextBox();
-            txtAnswer = new TextBox();
-            txtTriesRemaining = new TextBox();
             lblAnswer = new Label();
             lblTriesRemaining = new Label();
-            txtWord = new TextBox();
             tblBottom = new TableLayoutPanel();
             tblKeys = new TableLayoutPanel();
             btnQ = new Button();
@@ -67,9 +62,14 @@
             btnN = new Button();
             btnM = new Button();
             lblLetters = new Label();
-            txtLetters = new TextBox();
             btnGiveUp = new Button();
             btnReset = new Button();
+            lblLettersText = new Label();
+            lblTriesRemainingNum = new Label();
+            lblScoreNum = new Label();
+            lblAnswerText = new Label();
+            lblMessageText = new Label();
+            lblWordText = new Label();
             tblMain.SuspendLayout();
             tblBottom.SuspendLayout();
             tblKeys.SuspendLayout();
@@ -85,16 +85,16 @@
             tblMain.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16.6627789F));
             tblMain.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 8.338054F));
             tblMain.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 8.348052F));
-            tblMain.Controls.Add(txtMessage, 1, 0);
             tblMain.Controls.Add(btnNewGame, 0, 0);
             tblMain.Controls.Add(lblScore, 5, 0);
-            tblMain.Controls.Add(txtScore, 6, 0);
-            tblMain.Controls.Add(txtAnswer, 2, 1);
-            tblMain.Controls.Add(txtTriesRemaining, 4, 1);
             tblMain.Controls.Add(lblAnswer, 1, 1);
             tblMain.Controls.Add(lblTriesRemaining, 3, 1);
-            tblMain.Controls.Add(txtWord, 0, 2);
             tblMain.Controls.Add(tblBottom, 0, 4);
+            tblMain.Controls.Add(lblTriesRemainingNum, 4, 1);
+            tblMain.Controls.Add(lblScoreNum, 6, 0);
+            tblMain.Controls.Add(lblAnswerText, 2, 1);
+            tblMain.Controls.Add(lblMessageText, 1, 0);
+            tblMain.Controls.Add(lblWordText, 0, 2);
             tblMain.Dock = DockStyle.Fill;
             tblMain.Location = new Point(0, 0);
             tblMain.Name = "tblMain";
@@ -109,21 +109,6 @@
             tblMain.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tblMain.Size = new Size(962, 543);
             tblMain.TabIndex = 0;
-            // 
-            // txtMessage
-            // 
-            tblMain.SetColumnSpan(txtMessage, 4);
-            txtMessage.Dock = DockStyle.Fill;
-            txtMessage.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtMessage.ForeColor = Color.Firebrick;
-            txtMessage.Location = new Point(163, 3);
-            txtMessage.Multiline = true;
-            txtMessage.Name = "txtMessage";
-            txtMessage.Size = new Size(634, 56);
-            txtMessage.TabIndex = 1;
-            txtMessage.TabStop = false;
-            txtMessage.Text = "Press 'New game' to begin playing.";
-            txtMessage.TextAlign = HorizontalAlignment.Center;
             // 
             // btnNewGame
             // 
@@ -151,42 +136,6 @@
             lblScore.TabIndex = 2;
             lblScore.Text = "Score:";
             lblScore.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // txtScore
-            // 
-            txtScore.Dock = DockStyle.Fill;
-            txtScore.Enabled = false;
-            txtScore.Location = new Point(883, 3);
-            txtScore.Multiline = true;
-            txtScore.Name = "txtScore";
-            txtScore.PlaceholderText = "0";
-            txtScore.Size = new Size(76, 56);
-            txtScore.TabIndex = 3;
-            txtScore.TabStop = false;
-            txtScore.TextAlign = HorizontalAlignment.Center;
-            // 
-            // txtAnswer
-            // 
-            txtAnswer.Dock = DockStyle.Fill;
-            txtAnswer.Enabled = false;
-            txtAnswer.Location = new Point(323, 65);
-            txtAnswer.Multiline = true;
-            txtAnswer.Name = "txtAnswer";
-            txtAnswer.Size = new Size(154, 56);
-            txtAnswer.TabIndex = 5;
-            txtAnswer.TabStop = false;
-            // 
-            // txtTriesRemaining
-            // 
-            txtTriesRemaining.Dock = DockStyle.Fill;
-            txtTriesRemaining.Enabled = false;
-            txtTriesRemaining.Location = new Point(643, 65);
-            txtTriesRemaining.Multiline = true;
-            txtTriesRemaining.Name = "txtTriesRemaining";
-            txtTriesRemaining.Size = new Size(154, 56);
-            txtTriesRemaining.TabIndex = 7;
-            txtTriesRemaining.TabStop = false;
-            txtTriesRemaining.Text = "13";
             // 
             // lblAnswer
             // 
@@ -216,21 +165,6 @@
             lblTriesRemaining.Text = "# of tries remaining:";
             lblTriesRemaining.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // txtWord
-            // 
-            txtWord.BackColor = SystemColors.Info;
-            tblMain.SetColumnSpan(txtWord, 7);
-            txtWord.Dock = DockStyle.Fill;
-            txtWord.Font = new Font("Segoe UI", 72F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtWord.Location = new Point(3, 127);
-            txtWord.Multiline = true;
-            txtWord.Name = "txtWord";
-            tblMain.SetRowSpan(txtWord, 2);
-            txtWord.Size = new Size(956, 192);
-            txtWord.TabIndex = 8;
-            txtWord.TabStop = false;
-            txtWord.TextAlign = HorizontalAlignment.Center;
-            // 
             // tblBottom
             // 
             tblBottom.ColumnCount = 7;
@@ -244,9 +178,9 @@
             tblBottom.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 6.25F));
             tblBottom.Controls.Add(tblKeys, 1, 1);
             tblBottom.Controls.Add(lblLetters, 0, 1);
-            tblBottom.Controls.Add(txtLetters, 0, 2);
             tblBottom.Controls.Add(btnGiveUp, 4, 1);
             tblBottom.Controls.Add(btnReset, 4, 3);
+            tblBottom.Controls.Add(lblLettersText, 0, 2);
             tblBottom.Dock = DockStyle.Fill;
             tblBottom.Location = new Point(3, 325);
             tblBottom.Name = "tblBottom";
@@ -646,18 +580,6 @@
             lblLetters.Text = "Used Letters";
             lblLetters.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // txtLetters
-            // 
-            txtLetters.Dock = DockStyle.Fill;
-            txtLetters.Enabled = false;
-            txtLetters.Location = new Point(3, 89);
-            txtLetters.Multiline = true;
-            txtLetters.Name = "txtLetters";
-            tblBottom.SetRowSpan(txtLetters, 2);
-            txtLetters.Size = new Size(233, 80);
-            txtLetters.TabIndex = 1;
-            txtLetters.TabStop = false;
-            // 
             // btnGiveUp
             // 
             btnGiveUp.BackColor = Color.Sienna;
@@ -686,6 +608,78 @@
             btnReset.Text = "Reset";
             btnReset.UseVisualStyleBackColor = false;
             // 
+            // lblLettersText
+            // 
+            lblLettersText.AutoSize = true;
+            lblLettersText.Dock = DockStyle.Fill;
+            lblLettersText.Location = new Point(3, 86);
+            lblLettersText.Name = "lblLettersText";
+            tblBottom.SetRowSpan(lblLettersText, 2);
+            lblLettersText.Size = new Size(233, 86);
+            lblLettersText.TabIndex = 10;
+            lblLettersText.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // lblTriesRemainingNum
+            // 
+            lblTriesRemainingNum.AutoSize = true;
+            lblTriesRemainingNum.Dock = DockStyle.Fill;
+            lblTriesRemainingNum.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblTriesRemainingNum.Location = new Point(643, 62);
+            lblTriesRemainingNum.Name = "lblTriesRemainingNum";
+            lblTriesRemainingNum.Size = new Size(154, 62);
+            lblTriesRemainingNum.TabIndex = 9;
+            lblTriesRemainingNum.Text = "8";
+            lblTriesRemainingNum.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // lblScoreNum
+            // 
+            lblScoreNum.AutoSize = true;
+            lblScoreNum.Dock = DockStyle.Fill;
+            lblScoreNum.Location = new Point(883, 0);
+            lblScoreNum.Name = "lblScoreNum";
+            lblScoreNum.Size = new Size(76, 62);
+            lblScoreNum.TabIndex = 10;
+            lblScoreNum.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // lblAnswerText
+            // 
+            lblAnswerText.AutoSize = true;
+            lblAnswerText.Dock = DockStyle.Fill;
+            lblAnswerText.Location = new Point(323, 62);
+            lblAnswerText.Name = "lblAnswerText";
+            lblAnswerText.Size = new Size(154, 62);
+            lblAnswerText.TabIndex = 11;
+            lblAnswerText.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // lblMessageText
+            // 
+            lblMessageText.AutoSize = true;
+            tblMain.SetColumnSpan(lblMessageText, 4);
+            lblMessageText.Dock = DockStyle.Fill;
+            lblMessageText.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblMessageText.ForeColor = Color.Firebrick;
+            lblMessageText.Location = new Point(163, 0);
+            lblMessageText.Name = "lblMessageText";
+            lblMessageText.Size = new Size(634, 62);
+            lblMessageText.TabIndex = 12;
+            lblMessageText.Text = "Press 'New game' to begin playing.";
+            lblMessageText.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // lblWordText
+            // 
+            lblWordText.AutoSize = true;
+            lblWordText.BackColor = SystemColors.Info;
+            tblMain.SetColumnSpan(lblWordText, 7);
+            lblWordText.Dock = DockStyle.Fill;
+            lblWordText.Font = new Font("Segoe UI", 72F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblWordText.Location = new Point(3, 124);
+            lblWordText.Name = "lblWordText";
+            tblMain.SetRowSpan(lblWordText, 2);
+            lblWordText.Size = new Size(956, 198);
+            lblWordText.TabIndex = 13;
+            lblWordText.TextAlign = ContentAlignment.MiddleCenter;
+            lblWordText.Click += label1_Click;
+            // 
             // Hangman
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -705,15 +699,10 @@
         #endregion
 
         private TableLayoutPanel tblMain;
-        private TextBox txtMessage;
         private Button btnNewGame;
         private Label lblScore;
-        private TextBox txtScore;
-        private TextBox txtAnswer;
-        private TextBox txtTriesRemaining;
         private Label lblAnswer;
         private Label lblTriesRemaining;
-        private TextBox txtWord;
         private TableLayoutPanel tblKeys;
         private TableLayoutPanel tblBottom;
         private Button btnQ;
@@ -743,8 +732,13 @@
         private Button btnN;
         private Button btnM;
         private Label lblLetters;
-        private TextBox txtLetters;
         private Button btnGiveUp;
         private Button btnReset;
+        private Label lblTriesRemainingNum;
+        private Label lblScoreNum;
+        private Label lblAnswerText;
+        private Label lblMessageText;
+        private Label lblLettersText;
+        private Label lblWordText;
     }
 }
