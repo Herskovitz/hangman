@@ -3,13 +3,6 @@ using gnuciDictionary;
 
 namespace HangmanApp
 {
-    /*
-     (*) YM: Great job! See one comment below from LB which still needs fixing. User can overwrite the text box values. Was that intentional? 
-    It may be worthwhile switching them to a label.
-
-     LB: Amazing job on the game! 94% Please see comments and list of bugs below and resubmit.
-        (*) 1. Ensure all relevant textboxes (e.g. lblAnswerText, lblTriesRemainingNum, lblWordText) are disabled when appropriate.
-    */
     public partial class Hangman : Form
     {
         List<Button> lstKeys;
