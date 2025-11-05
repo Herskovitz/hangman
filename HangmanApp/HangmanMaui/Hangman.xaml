@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HangmanMaui.Hangman"
+             Title="Hangman">
+    <VerticalStackLayout>
+        <Grid ColumnDefinitions="*,*,*,*,*,*,*,*" RowDefinitions="*" Margin="5">
+            <Button x:Name="btnNewGame" Text="New Game" Grid.Column="0" TextColor="LightSeaGreen"/>
+            <Button x:Name="btnGiveUp" Text="Give Up" Grid.Column="6" TextColor="IndianRed"/>
+            <Button x:Name="btnReset" Text="Reset" Grid.Column="7" TextColor="OrangeRed"/>
+        </Grid>
+        <Label x:Name="lblMessage" 
+         Text="Press new game to begin playing." 
+         TextColor="DarkRed" 
+         Background="White"
+         HorizontalOptions="Center"
+               Padding="15"
+         FontAttributes="Bold"
+         FontSize="Large"
+               />
+        <Grid ColumnDefinitions="*,*,*,3*,*,4*,*,*" RowDefinitions="*" Margin="10">
+            <Label x:Name="lblTriesRemaining" Text="No. of tries remaining:" Grid.Column="0" />
+            <Frame Grid.Column="1" Style="{StaticResource Key=frame-label}">
+                <Label x:Name="lblTriesRemainingText"  Style="{StaticResource Key=text-label}"/>
+            </Frame>
+            <Label x:Name="lblLetters" Text="Used letters:" Grid.Column="2"/>
+            <Frame BorderColor="#152248" HeightRequest="50" Grid.Column="3" Style="{StaticResource Key=frame-label}">
+                <Label x:Name="lblLettersText" Style="{StaticResource Key=text-label}"/>
+            </Frame>
+            <Label x:Name="lblAnswer" Text="Answer:" Grid.Column="4"/>
+            <Frame Grid.Column="5" Style="{StaticResource Key=frame-label}">
+                <Label x:Name="lblAnswerText" Style="{StaticResource Key=text-label}"/>
+            </Frame>
+            <Label x:Name="lblScore" Text="Score:" Grid.Column="6"/>
+            <Frame Grid.Column="7" Style="{StaticResource Key=frame-label}">
+                <Label x:Name="lblScoreText"  Style="{StaticResource Key=text-label}"/>
+            </Frame>
+        </Grid>
+        <Label x:Name="lblWord" HeightRequest="150" />
+        
+        <Grid ColumnDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*" RowDefinitions="*,*,*" HorizontalOptions="Center" Margin="4">
+            <Button Text="Q" Grid.Row="0" Grid.Column="0" Style="{StaticResource Key=button-keyboard}"/>
+            <Button Text="W" Grid.Row="0" Grid.Column="2"  Style="{StaticResource Key=button-keyboard}"/>
+            <Button Text="E" Grid.Row="0" Grid.Column="4"  Style="{StaticResource Key=button-keyboard}"/>
+            <Button Text="R" Grid.Row="0" Grid.Column="6"  Style="{StaticResource Key=button-keyboard}"/>
+            <Button Text="T" Grid.Row="0" Grid.Column="8"  Style="{StaticResource Key=button-keyboard}"/>
+            <Button Text="Y" Grid.Row="0" Grid.Column="10" Style="{StaticResource Key=button-keyboard}"/>
+            <Button Text="U" Grid.Row="0" Grid.Column="12" Style="{StaticResource Key=button-keyboard}"/>
+            <Button Text="I" Grid.Row="0" Grid.Column="14" Style="{StaticResource Key=button-keyboard}"/>
+            <Button Text="O" Grid.Row="0" Grid.Column="16" Style="{StaticResource Key=button-keyboard}"/>
+            <Button Text="P" Grid.Row="0" Grid.Column="18" Style="{StaticResource Key=button-keyboard}"/>
+
+            <Button Text="A" Grid.Row="1" Grid.Column="1" Style="{StaticResource Key=button-keyboard}"/>
+            <Button Text="S" Grid.Row="1" Grid.Column="3" Style="{StaticResource Key=button-keyboard}"/>
+            <Button Text="D" Grid.Row="1" Grid.Column="5" Style="{StaticResource Key=button-keyboard}"/>
+            <Button Text="F" Grid.Row="1" Grid.Column="7" Style="{StaticResource Key=button-keyboard}"/>
+            <Button Text="G" Grid.Row="1" Grid.Column="9" Style="{StaticResource Key=button-keyboard}"/>
+            <Button Text="H" Grid.Row="1" Grid.Column="11" Style="{StaticResource Key=button-keyboard}"/>
+            <Button Text="J" Grid.Row="1" Grid.Column="13" Style="{StaticResource Key=button-keyboard}"/>
+            <Button Text="K" Grid.Row="1" Grid.Column="15" Style="{StaticResource Key=button-keyboard}"/>
+            <Button Text="L" Grid.Row="1" Grid.Column="17" Style="{StaticResource Key=button-keyboard}"/>
+
+            <Button Text="Z" Grid.Row="2" Grid.Column="3" Style="{StaticResource Key=button-keyboard}"/>
+            <Button Text="X" Grid.Row="2" Grid.Column="5" Style="{StaticResource Key=button-keyboard}"/>
+            <Button Text="C" Grid.Row="2" Grid.Column="7" Style="{StaticResource Key=button-keyboard}"/>
+            <Button Text="V" Grid.Row="2" Grid.Column="9" Style="{StaticResource Key=button-keyboard}"/>
+            <Button Text="B" Grid.Row="2" Grid.Column="11" Style="{StaticResource Key=button-keyboard}"/>
+            <Button Text="N" Grid.Row="2" Grid.Column="13" Style="{StaticResource Key=button-keyboard}"/>
+            <Button Text="M" Grid.Row="2" Grid.Column="15" Style="{StaticResource Key=button-keyboard}"/>
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>

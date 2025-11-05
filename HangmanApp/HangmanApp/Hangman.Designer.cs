@@ -678,7 +678,6 @@
             lblWordText.Size = new Size(956, 198);
             lblWordText.TabIndex = 13;
             lblWordText.TextAlign = ContentAlignment.MiddleCenter;
-            lblWordText.Click += label1_Click;
             // 
             // Hangman
             // 
