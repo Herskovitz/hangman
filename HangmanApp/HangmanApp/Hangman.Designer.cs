@@ -112,7 +112,7 @@
             // 
             // btnNewGame
             // 
-            btnNewGame.BackColor = Color.DarkTurquoise;
+            btnNewGame.BackColor = Color.CornflowerBlue;
             btnNewGame.Dock = DockStyle.Fill;
             btnNewGame.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnNewGame.ForeColor = SystemColors.ButtonFace;
@@ -126,7 +126,7 @@
             // lblScore
             // 
             lblScore.AutoSize = true;
-            lblScore.BackColor = SystemColors.Highlight;
+            lblScore.BackColor = SystemColors.GradientActiveCaption;
             lblScore.Dock = DockStyle.Fill;
             lblScore.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblScore.ForeColor = SystemColors.ButtonFace;
@@ -140,7 +140,7 @@
             // lblAnswer
             // 
             lblAnswer.AutoSize = true;
-            lblAnswer.BackColor = Color.LightSeaGreen;
+            lblAnswer.BackColor = SystemColors.GradientActiveCaption;
             lblAnswer.Dock = DockStyle.Fill;
             lblAnswer.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblAnswer.ForeColor = SystemColors.ButtonFace;
@@ -154,7 +154,7 @@
             // lblTriesRemaining
             // 
             lblTriesRemaining.AutoSize = true;
-            lblTriesRemaining.BackColor = SystemColors.ActiveCaption;
+            lblTriesRemaining.BackColor = SystemColors.GradientActiveCaption;
             lblTriesRemaining.Dock = DockStyle.Fill;
             lblTriesRemaining.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblTriesRemaining.ForeColor = SystemColors.ButtonFace;
@@ -570,7 +570,7 @@
             // lblLetters
             // 
             lblLetters.AutoSize = true;
-            lblLetters.BackColor = SystemColors.ControlLight;
+            lblLetters.BackColor = SystemColors.GradientActiveCaption;
             lblLetters.Dock = DockStyle.Fill;
             lblLetters.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblLetters.Location = new Point(3, 43);
@@ -582,7 +582,7 @@
             // 
             // btnGiveUp
             // 
-            btnGiveUp.BackColor = Color.Sienna;
+            btnGiveUp.BackColor = Color.SteelBlue;
             tblBottom.SetColumnSpan(btnGiveUp, 3);
             btnGiveUp.Dock = DockStyle.Fill;
             btnGiveUp.Enabled = false;
@@ -596,7 +596,7 @@
             // 
             // btnReset
             // 
-            btnReset.BackColor = Color.Coral;
+            btnReset.BackColor = Color.DodgerBlue;
             tblBottom.SetColumnSpan(btnReset, 3);
             btnReset.Dock = DockStyle.Fill;
             btnReset.Enabled = false;
@@ -668,7 +668,7 @@
             // lblWordText
             // 
             lblWordText.AutoSize = true;
-            lblWordText.BackColor = SystemColors.Info;
+            lblWordText.BackColor = SystemColors.GradientInactiveCaption;
             tblMain.SetColumnSpan(lblWordText, 7);
             lblWordText.Dock = DockStyle.Fill;
             lblWordText.Font = new Font("Segoe UI", 72F, FontStyle.Regular, GraphicsUnit.Point, 0);
