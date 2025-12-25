@@ -11,11 +11,19 @@ namespace HangmanSystem
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public event EventHandler? ScoreChanged;
+        public event EventHandler? NumOfWinsChanged;
+        public event EventHandler? NumOfLossesChanged;
+        public event EventHandler? NumOfGiveupsChanged;
+
+
 
         int _numoftriesremaining = 0;
         string _maskedword = "";
         string _gamemessage = "Press 'New game' to begin playing.";
         static int _score = 0;
+        static int _numofwins = 0;
+        static int _numoflosses = 0;
+        static int _numofgiveups = 0;
         List<char> _usedletters = new();
         bool _playing;
         private static int numgames;
@@ -106,6 +114,54 @@ namespace HangmanSystem
                 ScoreChanged?.Invoke(this, new EventArgs());
             }
         }
+        public static int NumOfWins
+        {
+            get => _numofwins;
+            set
+            {
+                _numofwins = value;
+            }
+        }
+        public int NumOfWinsDisplay
+        {
+            get => _numofwins;
+            set
+            {
+                NumOfWinsChanged?.Invoke(this, new EventArgs());
+            }
+        }
+        public static int NumOfLosses
+        {
+            get => _numoflosses;
+            set
+            {
+                _numoflosses = value;
+            }
+        }
+        public int NumOfLossesDisplay
+        {
+            get => _numoflosses;
+            set
+            {
+                NumOfLossesChanged?.Invoke(this, new EventArgs());
+            }
+        }
+        public static int NumOfGiveUps
+        {
+            get => _numofgiveups;
+            set
+            {
+                _numofgiveups = value;
+            }
+        }
+        public int NumOfGiveupsDisplay
+        {
+            get => _numofgiveups;
+            set
+            {
+                NumOfGiveupsChanged?.Invoke(this, new EventArgs());
+            }
+        }
 
         public List<char> UsedLetters
         {
@@ -129,7 +185,6 @@ namespace HangmanSystem
         }
 
         public bool CanStartNewGame => GameStatus == GameStatusEnum.Start || GameStatus == GameStatusEnum.Winning || GameStatus == GameStatusEnum.Losing || GameStatus == GameStatusEnum.GiveUp;
-        public bool CanReset => GameStatus != GameStatusEnum.Start;
         public string ActiveGame { get; private set; }
         public string NewGameButtonText
         {
@@ -198,11 +253,15 @@ namespace HangmanSystem
             if (MaskedWord == word.CurrentWord)
             {
                 GameStatus = GameStatusEnum.Winning;
+                NumOfWins++;
+                NumOfWinsChanged?.Invoke(this, new EventArgs());
                 EndGame();
             }
             else if (NumOfTriesRemaining < 1)
             {
                 GameStatus = GameStatusEnum.Losing;
+                NumOfLosses++;
+                NumOfLossesChanged?.Invoke(this, new EventArgs());
                 EndGame();
             }
             else
@@ -222,7 +281,17 @@ namespace HangmanSystem
                 case GameStatusEnum.Winning:
                     break;
                 case GameStatusEnum.Start:
+                    NumOfWins = 0;
+                    NumOfWinsChanged?.Invoke(this, new EventArgs());
+                    NumOfLosses = 0;
+                    NumOfLossesChanged?.Invoke(this, new EventArgs());
+                    NumOfGiveUps = 0;
+                    NumOfGiveupsChanged?.Invoke(this, new EventArgs());
+                    NewGameMode();
+                    break;
                 case GameStatusEnum.GiveUp:
+                    NumOfGiveUps++;
+                    NumOfGiveupsChanged?.Invoke(this, new EventArgs());
                     NewGameMode();
                     break;
             }
@@ -231,6 +300,9 @@ namespace HangmanSystem
             Score = CalculateScore();
             ScoreChanged?.Invoke(this, new EventArgs());
             InvokePropertyChanged("ScoreDisplay");
+            InvokePropertyChanged("NumOfWinsDisplay");
+            InvokePropertyChanged("NumOfLossesDisplay");
+            InvokePropertyChanged("NumOfGiveupsDisplay");
             GetGameMessage();
         }
 

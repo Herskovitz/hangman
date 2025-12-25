@@ -9,11 +9,23 @@
             <Button x:Name="btnGiveUp" Text="Give Up" Grid.Column="6" TextColor="IndianRed" IsEnabled="{Binding Playing}" Clicked="btnGiveUp_Clicked"/>
             <Button x:Name="btnReset" Text="Reset" Grid.Column="7" TextColor="OrangeRed" IsEnabled="{Binding Playing}" Clicked="btnReset_Clicked"/>
         </Grid>
-        <HorizontalStackLayout Grid.Row="1">
-            <RadioButton x:Name="Game1Rb" Content="{Binding GameName}" IsChecked="True" CheckedChanged="Game_CheckedChanged" Margin="0,0,25,0" TextColor="#152248"/>
-            <RadioButton x:Name="Game2Rb" Content="{Binding GameName}" CheckedChanged="Game_CheckedChanged" Margin="0,0,25,0" TextColor="#152248"/>
-            <RadioButton x:Name="Game3Rb" Content="{Binding GameName}" CheckedChanged="Game_CheckedChanged" Margin="0,0,25,0" TextColor="#152248"/>
-        </HorizontalStackLayout>
+        <Grid Grid.Row="1" ColumnDefinitions="2*,2*,2*,*,*,*,*,*,*,*,*,*,*">
+            <RadioButton Grid.Column="0" x:Name="Game1Rb" Content="{Binding GameName}" IsChecked="True" CheckedChanged="Game_CheckedChanged" Margin="0,0,25,0" TextColor="#152248"/>
+            <RadioButton Grid.Column="1" x:Name="Game2Rb" Content="{Binding GameName}" CheckedChanged="Game_CheckedChanged" Margin="0,0,25,0" TextColor="#152248"/>
+            <RadioButton Grid.Column="2" x:Name="Game3Rb" Content="{Binding GameName}" CheckedChanged="Game_CheckedChanged" Margin="0,0,25,0" TextColor="#152248"/>
+            <Label Grid.Column="7" Text="Num of Wins"/>
+            <Border Grid.Column="8">
+                <Label x:Name="NumofwinsLbl" Style="{StaticResource Key=text-label}" Text="{Binding NumOfWinsDisplay}"/>
+            </Border>
+            <Label Grid.Column="9" Text="Num of Losses"/>
+            <Border Grid.Column="10">
+                <Label x:Name="NumoflossesLbl" Style="{StaticResource Key=text-label}" Text="{Binding NumOfLossesDisplay}"/>
+            </Border>
+            <Label Grid.Column="11" Text="Num Of Give Ups"/>
+            <Border Grid.Column="12">
+                <Label x:Name="NumofgiveupsLbl" Style="{StaticResource Key=text-label}" Text="{Binding NumOfGiveupsDisplay}"/>
+            </Border>
+        </Grid>
         <Label x:Name="lblMessage" 
          Text="{Binding GameMessage}"
          TextColor="DarkRed" 
