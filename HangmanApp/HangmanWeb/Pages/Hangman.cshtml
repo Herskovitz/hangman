@@ -1,0 +1,280 @@
+﻿@page
+@model HangmanWeb.Pages.HangmanModel
+@{
+}
+<div class="game-btn-container">
+    <button id="btnNewGame" class="btn btn-primary">New Game</button>
+    <div class="game-btn-container">
+        <button id="btnGiveUp" class="btn btn-primary text-danger">Give Up</button>
+        <button id="btnReset" class="btn btn-primary text-warning">Reset</button>
+    </div>
+</div>
+<div id="msg" class="text-danger message m-3">Press 'New game' to begin playing.</div>
+<div class="game-info-container">
+    <div class="game-stat-container col-sm-12 col-md-6 col-xl-3">
+        <label for="txtTriesRemaining" class="bg-primary text-white game-info">Tries remaining:</label>
+        <input id="txtTriesRemaining" class="border border-primary text-primary game-info" type="text" value="8" readonly />
+    </div>
+    <div class="game-stat-container col-sm-12 col-md-6 col-xl-3">
+        <label for="txtUsedLetters" class="bg-primary text-white game-info">Used letters:</label>
+        <input id="txtUsedLetters" class="border border-primary text-primary game-info" type="text" value="" readonly />
+    </div>
+    <div class="game-stat-container col-sm-12 col-md-6 col-xl-3">
+        <label for="txtAnswer" class="bg-primary text-white game-info">Answer:</label>
+        <input id="txtAnswer" class="border border-primary text-primary game-info" type="text" value="" readonly />
+    </div>
+    <div class="game-stat-container col-sm-12 col-md-6 col-xl-3">
+        <label for="score" class="bg-primary text-white game-info">Score:</label>
+        <input id="score" class="border border-primary text-primary game-info" type="text" value="0" readonly />
+    </div>
+</div>
+<div id="maskedWord" class="word-label bg-primary border  col-12 "></div>
+<div class="container">
+    <div class="row mb-3 mt-3">
+        <div class="col-1"></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">Q</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">W</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">E</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">R</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">T</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">Y</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">U</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">I</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">O</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">P</button></div>
+        <div class="col-1"></div>
+    </div>
+    <div class="row mb-2">
+        <div class="col-1  ms-2 ms-md-5"></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">A</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">S</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">D</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">F</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">G</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">H</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">J</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">K</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">L</button></div>
+        <div class="col-2"></div>
+    </div>
+    <div class="row mb-2">
+        <div class="col-2 ms-3"></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">Z</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">X</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">C</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">V</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">B</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">N</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">M</button></div>
+        <div class="col-2"></div>
+    </div>
+</div>
+<script>
+     const words = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Words));
+     const gameStatuses = {Winning: "Winning",Playing: "Playing",Losing: "Losing",GiveUp: "GiveUp",Start: "Start"};
+     let currentGameStatus = gameStatuses.Start;
+     let msg = document.querySelector("#msg");
+     let answer = document.querySelector("#txtAnswer");
+     let triesRemaining = document.querySelector("#txtTriesRemaining");
+     let usedLettersDisplay = document.querySelector("#txtUsedLetters");
+     let score = document.querySelector("#score");
+     const maskedWord = document.querySelector("#maskedWord");
+     let currentWord = "";
+     const keyboardButtons = document.querySelectorAll(".key");
+     let usedLetters = [];
+     const btnNewGame = document.querySelector("#btnNewGame")
+     const btnGiveUp = document.querySelector("#btnGiveUp");
+     const btnReset = document.querySelector("#btnReset");
+
+     btnNewGame.addEventListener("click", startGame);
+     btnGiveUp.addEventListener("click", gameGiveUp);
+     btnReset.addEventListener("click", gameReset);
+
+     btnGiveUp.disabled = true;
+     btnReset.disabled = true;
+
+     keyboardButtons.forEach(btn => btn.addEventListener("click", handleLetterSelection));
+
+     function startGame(){
+         newGameMode();
+         currentGameStatus = gameStatuses.Playing;
+         currentWord = pickRandomWord().toUpperCase();
+         setGameMessageDisplay();
+         updateMaskedWord();
+         keyboardButtons.forEach(btn => btn.disabled = false);
+         setTriesRemaining(8);
+     }
+     function pickRandomWord(){
+         const randomWordIndex = Math.floor(Math.random() * words.length);
+         return words[randomWordIndex];
+     }
+     function updateMaskedWord()
+         {
+             let result = "";
+
+             for(let i = 0; i < currentWord.length; i++){
+                 const letter = currentWord[i];
+                 if (usedLetters.includes(letter)){
+                     result += letter;
+                 }
+                 else
+                 result += "?";
+             }
+             setMaskedWordDisplay(result);
+         }
+     function handleLetterSelection(event) {
+         const btn = event.target;
+         const letter = btn ? btn.textContent : null;
+
+         if (currentGameStatus === gameStatuses.Playing) {
+             if (btn) {
+                 btn.disabled = true;
+             }
+
+             if (letter && letter.length > 0) {
+                 const charLetter = letter[0];
+                 if (!usedLetters.includes(charLetter)) {
+                     usedLetters.push(charLetter);
+                     setUsedLettersDisplay(usedLetters.join(""));
+                 }
+             }
+
+             if (currentWord.includes(letter)) {
+                 updateMaskedWord();
+             } else {
+                 setTriesRemaining(Number(triesRemaining.value - 1));
+             }
+              evaluateGameStatus();
+         }
+     }
+       function endGame()
+          {
+             keyboardButtons.forEach(btn => btn.disabled = true);
+             setAnswerDisplay(currentWord);
+              switch (currentGameStatus)
+              {
+                  case gameStatuses.Winning:
+                      break;
+                   case gameStatuses.Start:
+                      newGameMode();
+                      break;
+                   case gameStatuses.GiveUp:
+                      newGameMode();
+                      break;
+              }
+              updateScoreDisplay();
+              setGameMessageDisplay();
+              setGameButtonsState(false);
+          }
+
+    function evaluateGameStatus()
+         {
+             if (maskedWord.textContent === currentWord)
+             {
+                 currentGameStatus = gameStatuses.Winning;
+                 endGame();
+             }
+              else if (Number(triesRemaining.value) < 1)
+             {
+                 currentGameStatus = gameStatuses.Losing;
+                 endGame();
+             }
+             else
+             {
+                 currentGameStatus = gameStatuses.Playing;
+             }
+             return currentGameStatus;
+         }
+     function calculatePoints()
+          {
+              let points = 0;
+              let ecpoints = 0;
+
+               if (Number(triesRemaining.value) > 2 && currentGameStatus === gameStatuses.Winning)
+              {
+                  ecpoints = 1;
+              }
+              switch (currentGameStatus)
+              {
+                  case gameStatuses.Winning:
+                      points = 1;
+                      break;
+                   case gameStatuses.Losing:
+                      points = -1;
+                      break;
+                   case gameStatuses.GiveUp:
+                      points = -2;
+                      break;
+                   case gameStatuses.Start:
+                      points = -(score.value);
+                      break;
+              }
+              return points + ecpoints;
+          }
+     function calculateScore()
+          {
+              return Number(score.value) + calculatePoints();
+          }
+     function updateScoreDisplay(){
+              score.value = calculateScore();
+          }
+     function getGameMessage()
+          {
+              let msgText = `${currentWord.length}-letter word. Click on the keyboard below to choose a letter.`;
+              const scoreValue =  score.value;
+              switch (currentGameStatus)
+              {
+                  case gameStatuses.Start:
+                      msgText = "Press 'New game' to begin playing.";
+                      break;
+                   case gameStatuses.Winning:
+                      msgText = `YOU WIN! Points earned this round: ${calculatePoints()} Total score: ${scoreValue}.`;
+                      break;
+                   case gameStatuses.Losing:
+                      msgText = `Game over. Word is: ${currentWord} Total score: ${scoreValue}.`;
+                      break;
+                   case gameStatuses.GiveUp:
+                      msgText = `No problem, you'll have another chance soon. Total score: ${scoreValue}.`;
+                      break;
+              }
+              return msgText;
+          }
+      function gameGiveUp(){
+          currentGameStatus = gameStatuses.GiveUp;
+          endGame();
+      }
+      function gameReset(){
+           currentGameStatus = gameStatuses.Start;
+           endGame();
+      }
+     function newGameMode()
+          {
+              setGameButtonsState(true);
+              setTriesRemaining("");
+              setMaskedWordDisplay("");
+              usedLetters = [];
+              setUsedLettersDisplay("");
+              setAnswerDisplay("");
+          }
+              function setGameButtonsState(isGameActive) {
+       btnNewGame.disabled = isGameActive; 
+       btnReset.disabled = !isGameActive;
+       btnGiveUp.disabled = !isGameActive;
+     }
+
+     function setTriesRemaining(number){
+         triesRemaining.value = number;
+     }
+     function setUsedLettersDisplay(letters){
+         usedLettersDisplay.value = letters;
+     }
+     function setMaskedWordDisplay(word){
+         maskedWord.textContent = word;
+     }
+     function setGameMessageDisplay(){
+         msg.textContent = getGameMessage();
+     }
+     function setAnswerDisplay(word){
+         answer.value = word;
+     }
+</script>

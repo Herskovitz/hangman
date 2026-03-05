@@ -1,0 +1,37 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">   
+    <img src="images/hangman-logo.png" alt="Hangman Logo" class="logo mb-3" />
+    <h1 class="display-4 text-primary">
+        Welcome to Hangman!
+    </h1>
+    <hr />
+    <h3 class="text-primary mt-5">
+        The game:
+    </h3>
+    <div class="text-primary  d-inline-block text-start">
+        The game will randomly generate a word between 6 and 10 letters for you to guess. You have eight chances to pick letters that might be in the word.
+        <ul class="mb-3 mt-3">
+            <li>
+                If you guess the word correctly, you earn 1 point.
+            </li>
+            <li>
+                Guessing the word by choosing seven or fewer letters gives you an extra bonus point.
+            </li>
+            <li>
+                If you run out of chances before guessing the word, you lose 1 point.
+            </li>
+            <li>
+                You can choose to "Give up" anytime during a round, but this will deduct 2 points from your score.
+            </li>
+            <li>
+                Use the Reset button anytime to start fresh with a score of zero.
+            </li>
+</ul>
+        Good luck and have fun!
+    </div>
+</div>
