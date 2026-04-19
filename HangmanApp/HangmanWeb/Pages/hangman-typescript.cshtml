@@ -1,0 +1,79 @@
+﻿@page
+@model HangmanWeb.Pages.hangman_typescriptModel
+@{
+}
+<div class="game-btn-container">
+    <button id="btnNewGame" class="btn btn-primary">New Game</button>
+    <div class="game-btn-container">
+        <button id="btnGiveUp" class="btn btn-primary text-danger">Give Up</button>
+        <button id="btnReset" class="btn btn-primary text-warning">Reset</button>
+    </div>
+</div>
+<div id="msg" class="text-danger message m-3">Press 'New game' to begin playing.</div>
+<div class="game-info-container">
+    <div class="game-stat-container col-sm-12 col-md-6 col-xl-3">
+        <label for="txtTriesRemaining" class="bg-primary text-white game-info">Tries remaining:</label>
+        <input id="txtTriesRemaining" class="border border-primary text-primary game-info" type="text" value="8" readonly />
+    </div>
+    <div class="game-stat-container col-sm-12 col-md-6 col-xl-3">
+        <label for="txtUsedLetters" class="bg-primary text-white game-info">Used letters:</label>
+        <input id="txtUsedLetters" class="border border-primary text-primary game-info" type="text" value="" readonly />
+    </div>
+    <div class="game-stat-container col-sm-12 col-md-6 col-xl-3">
+        <label for="txtAnswer" class="bg-primary text-white game-info">Answer:</label>
+        <input id="txtAnswer" class="border border-primary text-primary game-info" type="text" value="" readonly />
+    </div>
+    <div class="game-stat-container col-sm-12 col-md-6 col-xl-3">
+        <label for="score" class="bg-primary text-white game-info">Score:</label>
+        <input id="score" class="border border-primary text-primary game-info" type="text" value="0" readonly />
+    </div>
+</div>
+<div id="maskedWord" class="word-label bg-primary border  col-12 "></div>
+<div class="container">
+    <div class="row mb-3 mt-3">
+        <div class="col-1"></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">Q</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">W</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">E</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">R</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">T</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">Y</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">U</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">I</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">O</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">P</button></div>
+        <div class="col-1"></div>
+    </div>
+    <div class="row mb-2">
+        <div class="col-1  ms-2 ms-md-5"></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">A</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">S</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">D</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">F</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">G</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">H</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">J</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">K</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">L</button></div>
+        <div class="col-2"></div>
+    </div>
+    <div class="row mb-2">
+        <div class="col-2 ms-3"></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">Z</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">X</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">C</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">V</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">B</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">N</button></div>
+        <div class="col-1"><button class="btn btn-secondary key w-100">M</button></div>
+        <div class="col-2"></div>
+    </div>
+</div>
+
+
+<script>
+    window.words = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Words));
+</script>
+<script src="/js/hangman-typescript.js">
+
+</script>
